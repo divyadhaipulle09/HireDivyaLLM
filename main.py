@@ -1,3 +1,5 @@
+
+
 import json
 import ast
 import time
@@ -129,18 +131,28 @@ def query_LLM_with_retry(index, user_query, retries=3, delay=5):
             else:
                 st.error(f"Failed after {retries} attempts: {e}")
                 return "I'm currently unavailable due to API rate limits. Please try again later."
-
 def main():
     index = ensure_index()
     if index:
         load_or_create_embeddings(index, "HireDivyaResume.pdf")
         
-        if prompt := st.chat_input("What is up?"):
+        # Display previous conversation history
+        if st.session_state.messages:
+            for i, message in enumerate(st.session_state.messages):
+                with st.chat_message(message["role"]):
+                    st.markdown(message["content"])
+
+        # Chat input with a unique key
+        if prompt := st.chat_input("What is up?", key=f"chat_input_{len(st.session_state.messages)}"):
+            # Append user message to session state
             with st.chat_message("user"):
                 st.markdown(prompt)
             st.session_state.messages.append({"role": "user", "content": prompt})
             
+            # Generate response from LLM
             response = query_LLM(index, prompt)
+            
+            # Append assistant response to session state
             with st.chat_message("assistant"):
                 st.markdown(response)
             st.session_state.messages.append({"role": "assistant", "content": response})
