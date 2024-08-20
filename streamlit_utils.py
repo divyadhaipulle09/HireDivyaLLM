@@ -55,7 +55,7 @@ def sidebar():
     st.sidebar.markdown(
         "<h1 style='text-align: center; color: #0072B1;'>Divya Dhaipullay</h1>", unsafe_allow_html=True
     )
-    st.sidebar.image(r"C:\Users\Divya\Downloads\HireDivyaLLM\Me.jpg", use_column_width=True)
+    st.sidebar.image(r"Me.jpg", use_column_width=True)
     
     st.sidebar.markdown(
         "<p style='text-align: center;'>Machine Learning Engineer | Data Scientist | Data Analyst | AI Engineer</p>",
